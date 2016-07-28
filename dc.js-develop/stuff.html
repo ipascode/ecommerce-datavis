@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- Generated with d3-generator.com -->
+<html>
+
+<style>
+::-webkit-scrollbar{width: 15px;}
+
+::-webkit-scrollbar-thumb{background-color:rgb(120, 120, 120); border-radius: 0;}
+::-webkit-scrollbar-thumb:hover{background-color:rgb(100, 100, 100);}
+
+::-webkit-scrollbar-track{background-color:rgb(200, 200, 200);}
+
+@font-face
+{
+  font-family: Gravity;
+  src: url('fonts/Gravity-BookItalic.otf');
+}
+@font-face
+{
+  font-family: GravityI;
+  src: url('fonts/Gravity-LightItalic.otf');
+}
+@font-face
+{
+  font-family: Mochary;
+  src: url('fonts/Mochary_PERSONAL_USE_ONLY.ttf');
+}
+@font-face
+{
+  font-family: GravityL;
+    src: url('fonts/Gravity-Light.otf');
+}
+.wow
+{
+  font-family: 'Mochary', sans-serif;
+}
+.ace
+{
+  font-family: 'Gravity', sans-serif;
+}
+.beta
+{
+  font-family: 'GravityI', sans-serif;
+}
+
+body
+{
+  /*background-image: url("sunset.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:cover;
+    background-attachment:fixed;
+  width:100%;
+  height:100%;*/
+
+}
+.bar {
+  fill: #4a148c;
+  opacity: .5;  
+  stroke: rgba(10,10,10,.2);
+}
+
+
+.bar:hover {
+  fill: #ff9800;
+  opacity: 1;
+
+  stroke: rgba(10,10,10,.2)
+} 
+
+.axis {
+  display:none;
+}
+.axis path,
+
+      
+      .x.axis text {
+        display:none;
+      }
+      .x.axis line {
+        fill: none;
+        stroke: none;
+        shape-rendering: crispEdges;
+      }
+
+      
+
+.x.axis path {
+  display: none;
+
+} 
+  div.tooltip { 
+    position: absolute;     
+    text-align: center;     
+    width: 60px;          
+    height: 28px;         
+    padding: 2px;       
+    font: 12px sans-serif;    
+    background: lightsteelblue; 
+    border: 0px;    
+    border-radius: 8px;     
+    pointer-events: none;     
+  }
+.parallax-window {
+    background: transparent;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+.fade {
+
+  opacity: 1;
+}
+
+</style>
+  <head>
+     <title>Bar Chart</title>
+     <meta http-equiv="X-UA-Compatible" content="IE=9">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="css/dc.css"/>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="/parallax/parallax.js"></script>
+      <script src="/parallax/parallax.min.js"></script>
+      <script>
+        $(window).on("load",function() {
+          $(window).scroll(function() {
+           $(".fade").each(function() {
+              /* Check the location of each desired element */
+              var objectBottom = $(this).offset().top + $(this).outerHeight();
+              var windowBottom = $(window).scrollTop() + $(window).innerHeight();
+              /* If the element is completely within bounds of the window, fade it in */
+              if (objectBottom < windowBottom) { //object comes into view (scrolling down)
+                if ($(this).css("opacity")==0) {$(this).fadeTo(500,1);}
+              } else { //object goes out of view (scrolling up)
+                if ($(this).css("opacity")==1) {$(this).fadeTo(500,0);}
+      }
+    });
+  }); $(window).scroll(); //invoke scroll-handler on page-load
+});
+        $(document).ready(function() {
+    
+    /* Every time the window is scrolled ... */
+    $(window).scroll( function(){
+    
+        /* Check the location of each desired element */
+        $('.fad').each( function(i){
+            
+            var bottom_of_object = $(this).offset().top + $(this).outerHeight();
+            var bottom_of_window = $(window).scrollTop() + $(window).height();
+            
+            /* If the object is completely visible in the window, fade it it */
+            if( bottom_of_window > bottom_of_object ){
+                
+                $(this).animate({'opacity':'1'},500);
+                    
+            }
+            
+        }); 
+    
+    });
+    
+});
+      </script>
+
+  </head>
+  <body class="blue-grey lighten-1" >
+      <div class="parallax-container" data-parallax="scroll" data-speed=".1" data-image-src="/sunset.jpg" style=" width:100%; height:100vh;margin:0;">
+        <div class="row center fade" id="chart" >
+          <div  class="col s6" style="margin-top:5%;  width:100% "></div>
+        </div>
+           <div class="row center fad">
+                    <h1 class="white-text wow"style="margin-bottom:0">Online</h2>
+                   <h1 class="white-text wow"style="margin:0">Retailing</h2>
+           </div>
+           <div class="row">
+           </div> 
+           <div class="row center fad">
+                  <div  class="col s2 offset-s5" style= "height:5px; background-color:White;"></div>
+          </div>
+          <div class="row center fad">
+            <div class="col s6 offset-s3">
+                    <p class="white-text ace ">Curious on what people search on online stores?</p>
+                    <p class="white-text beta">Hover your mouse on the bar graph!</p>
+                  </div>
+          </div>
+          <div class="row center fad">
+                  <div  class="col s2 offset-s5" style= "height:5px; background-color:White;"></div>
+          </div>
+      
+        </div>
+      </div>
+  </div>
+  <div class="parallax-container blue-grey lighten-1"  data-parallax="scroll" data-speed="1" style=" width:100%; height:2.5vh;margin:0">
+ </div>
+<div class="parallax-container"  data-parallax="scroll" data-speed=".6" data-image-src="/streets.jpg"  style=" width:100%;  height:100vh;margin:0">
+ <div class="container">
+  <div class="row fade">
+    <h1 class="wow center white-text " style="font-size:64px; margin-top:5%;">Query Graphs</h1>
+  </div>
+  <div class="row center fade" style="margin:0;" >
+           <div  class="col s2 offset-s5" style= "height:5px; background-color:White; "></div>
+          <div class="row center fade">
+            <div class="col s6 offset-s3">
+                    <p class="white-text ace">Curious on how many</p>
+                    <p class="white-text beta"> Created by Nelson Gomez and Isabel Pasco</p>
+                  </div>
+          </div>
+          <div class="row center fade">
+                  <div  class="col s2 offset-s5" style= "height:5px; background-color:White;"></div>
+          </div>
+  </div>
+</div>
+<!--   <div class="row center fade">
+          <div class="col s6">
+              <img src="/bar sample.png" height="250" width="250">
+          </div>
+          <div class="col s6">
+            <img src="/pie sample.png" height="250" width="250">
+          </div>
+  </div> -->
+  <div class="row">
+    <div id="gain-loss-chart">
+        <strong>Days by Gain/Loss</strong>
+        <a class="reset" href="javascript:gainOrLossChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="quarter-chart">
+        <strong>Quarters</strong>
+        <a class="reset" href="javascript:quarterChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="day-of-week-chart">
+        <strong>Day of Week</strong>
+        <a class="reset" href="javascript:dayOfWeekChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="fluctuation-chart">
+        <strong>Days by Fluctuation(%)</strong>
+        <span class="reset" style="display: none;">range: <span class="filter"></span></span>
+        <a class="reset" href="javascript:fluctuationChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+    
+
+
+</div>
+
+
+     <script src="d3/d3.min.js"></script> 
+     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+    <script>
+
+
+var margin = {top: 0, right: 0, bottom: 10, left: 0 };
+    width = 1250;
+    height = 200;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "Query: <span class='deep-orange-text';>" + d.query + "</span> <br>" +
+        " Count: <span class='deep-orange-text'>" + d.count + "</span>";
+  })
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom +15)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.call(tip);
+
+d3.csv("sheet1.csv", type, function(error, data) {
+  if (error) throw error;
+
+  x.domain(data.map(function(d) { return d.query; }));
+  y.domain([0, d3.max(data, function(d) { return +d.count; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", function(d)
+          {
+            return "rotate(-65)"
+          });
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.query); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.count); })
+      .attr("height", function(d) { return height - y(d.count); }) 
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
+
+   svg.selectAll("rect")
+         .data(data)
+         .enter()
+         .append("rect")
+            .attr("id", function(d){   
+                return d.query;   // slug = label downcased, this works
+            });  
+   svg.append("text")      // text label for the x axis
+          .attr("x", 105)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("#");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 115)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("A");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 155)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("B");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 237.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("C");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 317.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("D");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 382)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("E");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 402)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("F");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 435)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("G");
+     svg.append("text")      // text label for the x axis
+          .attr("x", 482.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("H");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 520)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("I");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 542.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("K");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 580)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("L");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 627.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("M");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 680)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("N");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 710)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("O");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 727.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("P");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 807.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("Q");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 820)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("R");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 862.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("S");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 985)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("T");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 1030)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("V");
+     svg.append("text")      // text label for the x axis
+          .attr("x", 1062.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("W");
+     svg.append("text")      // text label for the x axis
+          .attr("x", 1128.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("Y");
+   svg.append("text")      // text label for the x axis
+        .attr("x", 1145)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "#ffffff")
+        .text("Z");
+
+  
+});
+
+
+function type(d) {
+  d.count = +d.count;
+  return d;
+}
+
+</script>
+
+</script>
+</body>
+</html>

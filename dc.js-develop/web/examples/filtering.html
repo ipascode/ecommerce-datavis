@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>dc.js - Filtering Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="dc.css"/>
+</head>
+<body>
+
+
+   <div id="chart-pie-source" style="width:300px; height:300px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:sourceChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+
+  <div id="chart-row-category" style="width:1000px; height:500px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:categoryChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+
+   <div id="chart-row-price" style="width:500px; height:300px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:priceChart.filterAll();dc.redrawAll();">reset</a>
+  </div>
+</div> 
+
+<div id="chart-row-priceperquery" style="width:1000px; height:8000px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:priceChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+
+<script type="text/javascript" src="../js/d3.js"></script>
+<script type="text/javascript" src="../js/crossfilter.js"></script>
+<script type="text/javascript" src="../js/dc.js"></script>
+<script type="text/javascript">
+
+var categoryChart = dc.rowChart("#chart-row-category"),
+    priceChart  = dc.barChart("#chart-row-price"),
+    sourceChart = dc.pieChart("#chart-pie-source"),
+    queryChart = dc.rowChart("#chart-row-priceperquery");
+
+d3.csv("source.csv", function(datasource) {
+datasource.forEach(function(e) {
+  e.sources = e.sources;
+  e.query = e.query;
+  });
+  console.log(datasource[0]);
+
+d3.csv("data.csv", function(data) {
+data.forEach(function(d) {
+    d.count = +d.count;
+  });
+  console.log(data[0]);
+
+// normalize/parse data
+
+function remove_empty_bins(source_group) {
+    return {
+        all:function () {
+            return source_group.all().filter(function(d) {
+                return d.value != 0;
+            });
+        }
+    };
+}
+var fdata = crossfilter(data),
+  edata = crossfilter(datasource),
+  categoryDim = fdata.dimension(function(d) {return d.categories;}),
+  sourceDim = edata.dimension(function(e) {return e.sources;}),
+  queryCountPerCategory = categoryDim.group().reduceSum(function(d) {return d.count;}),
+  queryDim = fdata.dimension(function(d) {return d.query;}),
+  queryPerSource = sourceDim.group(),
+  pricePerQuery = queryDim.group().reduceSum(function(d) {return +d["average price"];}),
+  spendHist    = queryDim.group().reduceCount(),
+  priceDim = fdata.dimension(function(d) {return +d["average price"];}),
+  priceHist = priceDim.group().reduceSum(function(d) {return d.count;}),
+  nonEmptyHist = remove_empty_bins(pricePerQuery);
+
+sourceChart
+    .dimension(sourceDim)
+    .group(queryPerSource)
+    .innerRadius(50)
+    .controlsUseVisibility(true);
+
+
+categoryChart
+    .dimension(categoryDim)
+    .group(queryCountPerCategory)
+    .elasticX(true)
+    .controlsUseVisibility(true);
+
+  //  categoryChart.xAxis().tickFormat(function(d) {return d*10}); // convert back to base unit
+  //  categoryChart.yAxis().ticks(2);
+//    .fixedBarHeight(25)
+ //   .margins({ top: 20, left: 10, right: 10, bottom: 20 }) 
+
+  priceChart
+    .dimension(priceDim)
+    .group(priceHist)
+    .x(d3.scale.linear().domain([0,950]))
+    .elasticY(true)
+    .controlsUseVisibility(true);
+
+  queryChart
+     .dimension(queryDim)
+    .fixedBarHeight(25)
+    .margins({ top: 20, left: 10, right: 10, bottom: 20 })    
+    .group(nonEmptyHist)
+    .elasticX(true)
+    .controlsUseVisibility(true);
+
+  dc.renderAll();
+});
+});
+
+</script>
+
+</body>
+</html>

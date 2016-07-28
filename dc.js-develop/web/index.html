@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>dc.js - Dimensional Charting Javascript Library</title>
+
+    <meta charset="UTF-8">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="css/dc.css"/>
+     <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="icon" type="image/x-icon" href="dc.logo.png"/>
+
+    <style>
+        #monthly-volume-chart g.y {
+            display: none;
+        }
+        #logo {
+            margin-right: 2em;
+            margin-top: 2em;
+        }
+    </style>
+</head>
+<body class="grey darken-4">
+
+ <div class="parallax-container" data-parallax="scroll" data-speed=".1" data-image-src="sunset.jpg" style=" width:100%; height:100vh;margin:0;">
+        <div class="row center fade" id="chart" >
+          <div  class="col s6" style="margin-top:5%;  width:100% "></div>
+        </div>
+           <div class="row center fad">
+                    <h1 class="white-text wow"style="margin-bottom:0">Online</h2>
+                   <h1 class="white-text wow"style="margin:0">Retailing</h2>
+           </div>
+           <div class="row">
+           </div> 
+           <div class="row center fade">
+                  <div  class="col s2 offset-s5" style= "height:5px; background-color:White;"></div>
+          </div>
+          <div class="row center fade">
+            <div class="col s6 offset-s3">
+                    <p class="white-text ace ">Curious on what people search on online stores?</p>
+                    <p class="white-text beta">Hover your mouse on the bar graph!</p>
+                  </div>
+          </div>
+          <div class="row center fad">
+                  <div  class="col s2 offset-s5" style= "height:5px; background-color:White;"></div>
+          </div>
+      
+        </div>
+      </div>
+  </div>
+</div>
+  <div class="parallax-container"  data-parallax="scroll" data-speed="1" style=" width:100%; height:2.5vh;margin:0">
+ </div>
+<div class="parallax-container"  data-parallax="scroll" data-speed=".6" data-image-src="streets.jpg"  style=" width:100%;  height:600vh;margin:0">
+ <div class="container" >
+  <div class="row fade">
+    <h1 class="wow center white-text " style="font-size:64px; margin-top:5%;">Query Graphs</h1>
+</div>
+  <div class="row center fade" style="margin:0;" >
+        <div class="row">
+           </div> 
+           <div  class="col s2 offset-s5" style= "height:5px; background-color:White; "></div>
+          <div class="row center fade" >
+            <div class="col s6 offset-s3">
+                    <p class="white-text ace">Curious on the statistics?</p>
+                    <p class="white-text beta">Scoll down! Click on a figure and see what happens!</p>
+            </div>
+          </div>
+          <div class="row center fade">
+                  <div  class="col s2 offset-s5" style= "height:5px; background-color:White;"></div>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="row center " style="margin: 0 2.5%">
+        <div class="col s2 offset-s1">
+            <div id="fix" style="position:fixed; z-index: 9999; right: 20%; top: 10%;height: 20%; width: 20%;">
+                <div id="chart-row-category" class="trans row" style="margin-bottom:0, margin-top:0l" >
+                    <strong class="white-text ace">Query by Categories</strong>
+                      
+
+                    <div class="clearfix"></div>
+                     
+                </div>
+
+                <div id="chart-row-price"class="trans row">
+                <strong class="white-text ace" style="margin-top:0;">Price by Query</strong>
+                <a class="reset" href="javascript:gainOrLossChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+              
+                <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col s2 offset-s5">
+           <!--  <div id="chart-pie-source" class="trans">
+                <strong class="white-text ace" >Quarters</strong>
+                <a class="reset" href="javascript:quarterChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+
+                <div class="clearfix"></div>
+            </div> -->
+        </div>
+     
+    </div>
+</div>
+<div class="row">
+
+  <div class="col s2 offset-s1">
+        <div id="chart-row-priceperquery"class="trans">
+        <strong class="white-text ace" style="margin-left:10%">Price by Query</strong>
+        <a class="reset" href="javascript:gainOrLossChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+      </div>
+        <div class="clearfix"></div>
+  </div>
+
+   
+</div>
+
+
+</div>
+
+<div class="parallax-container"  data-parallax="scroll" data-speed=".6"  style=" width:100%;  height:10vh;margin:0" >
+               <div class="row center fad" style="margin:0">
+
+                    <h5 class="white-text wow"style="margin-bottom:0">data visualizations</h2>
+                        <div class="col s6 offset-s3">    
+                    <p class="white-text beta" style="margin:0; font-size:10px">Gomez  +  Pasco</p>
+                    <p class="white-text beta" style="margin:0; font-size:10px">CS 159.35</p>
+                  </div>
+            </div>
+  
+    </div>
+</div>
+<!-- </div>
+<div ="parallax-container"  data-parallax="scroll" data-speed=".6"  style=" width:100%;  height:100vh;margin:0"
+
+   <div id="chart-pie-source" style="width:150px; height:150px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:sourceChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+
+  <div id="chart-row-category" style="width:400px; height:400px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:categoryChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+
+   <div id="chart-row-price" style="width:1000px; height:5000px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:priceChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+</div> -->
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="parallax/parallax.js"></script>
+<script src="parallax/parallax.min.js"></script>
+<script type="text/javascript" src="js/d3.js"></script>
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+<script type="text/javascript" src="js/colorbrewer.js"></script>
+
+<!-- <script type="text/javascript" src="stock.js"></script> -->
+
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-33628816-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+   <script>
+        $(window).on("load",function() {
+          $(window).scroll(function() {
+           $(".fade").each(function() {
+              /* Check the location of each desired element */
+              var objectBottom = $(this).offset().top + $(this).outerHeight();
+              var windowBottom = $(window).scrollTop() + $(window).innerHeight();
+              /* If the element is completely within bounds of the window, fade it in */
+              if (objectBottom < windowBottom) { //object comes into view (scrolling down)
+                if ($(this).css("opacity")==0) {$(this).fadeTo(500,1);}
+              } else { //object goes out of view (scrolling up)
+                if ($(this).css("opacity")==1) {$(this).fadeTo(500,0);}
+      }
+    });
+  }); $(window).scroll(); //invoke scroll-handler on page-load
+});
+        $(document).ready(function() {
+    
+    /* Every time the window is scrolled ... */
+    $(window).scroll( function(){
+    
+        /* Check the location of each desired element */
+        $('.fad').each( function(i){
+            
+            var bottom_of_object = $(this).offset().top + $(this).outerHeight();
+            var bottom_of_window = $(window).scrollTop() + $(window).height();
+            
+            /* If the object is completely visible in the window, fade it it */
+            if( bottom_of_window > bottom_of_object ){
+                
+                $(this).animate({'opacity':'1'},500);
+                    
+            }
+            
+        }); 
+    
+    });
+    
+});
+ </script>
+
+     <script src="d3/d3.min.js"></script> 
+     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/latest/jquery.js"></script>
+
+    <script>
+
+
+var margin = {top: 0, right: 0, bottom: 10, left: 0 };
+    width = 1250;
+    height = 200;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "Query: <span class='deep-orange-text';>" + d.query + "</span> <br>" +
+        " Count: <span class='deep-orange-text'>" + d.count + "</span>";
+  })
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom +15)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.call(tip);
+
+d3.csv("sheet1.csv", type, function(error, data) {
+  if (error) throw error;
+
+  x.domain(data.map(function(d) { return d.query; }));
+  y.domain([0, d3.max(data, function(d) { return +d.count; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", function(d)
+          {
+            return "rotate(-65)"
+          });
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.query); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.count); })
+      .attr("height", function(d) { return height - y(d.count); }) 
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
+
+   svg.selectAll("rect")
+         .data(data)
+         .enter()
+         .append("rect")
+            .attr("id", function(d){   
+                return d.query;   // slug = label downcased, this works
+            });  
+   svg.append("text")      // text label for the x axis
+          .attr("x", 105)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("#");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 115)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("A");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 155)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("B");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 237.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("C");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 317.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("D");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 382)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("E");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 402)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("F");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 435)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("G");
+     svg.append("text")      // text label for the x axis
+          .attr("x", 482.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("H");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 520)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("I");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 542.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("K");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 580)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("L");
+    svg.append("text")      // text label for the x axis
+          .attr("x", 627.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("M");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 680)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("N");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 710)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("O");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 727.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("P");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 807.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("Q");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 820)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("R");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 862.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("S");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 985)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("T");
+   svg.append("text")      // text label for the x axis
+          .attr("x", 1030)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("V");
+     svg.append("text")      // text label for the x axis
+          .attr("x", 1062.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("W");
+     svg.append("text")      // text label for the x axis
+          .attr("x", 1128.5)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "white")
+        .text("Y");
+   svg.append("text")      // text label for the x axis
+        .attr("x", 1145)
+        .attr("y",  215 )
+        .style("text-anchor", "middle")
+        .style("font-family", "GravityL")
+        .style("color", "#ffffff")
+        .text("Z");
+
+  
+});
+
+
+function type(d) {
+  d.count = +d.count;
+  return d;
+}
+
+</script>
+<script type="text/javascript">
+
+var categoryChart = dc.rowChart("#chart-row-category"),
+    priceChart  = dc.barChart("#chart-row-price"),
+    queryChart = dc.rowChart("#chart-row-priceperquery");
+
+d3.csv("source.csv", function(datasource) {
+datasource.forEach(function(e) {
+  e.sources = e.sources;
+  e.query = e.query;
+  });
+  console.log(datasource[0]);
+
+d3.csv("data.csv", function(data) {
+data.forEach(function(d) {
+    d.count = +d.count;
+  });
+  console.log(data[0]);
+
+// normalize/parse data
+function remove_empty_bins(source_group) {
+    return {
+        all:function () {
+            return source_group.all().filter(function(d) {
+                return d.value != 0;
+            });
+        }
+    };
+}
+
+var fdata = crossfilter(data),
+  edata = crossfilter(datasource),
+  categoryDim = fdata.dimension(function(d) {return d.categories;}),
+  sourceDim = edata.dimension(function(e) {return e.sources;}),
+  queryCountPerCategory = categoryDim.group().reduceSum(function(d) {return d.count;}),
+  queryDim = fdata.dimension(function(d) {return d.query;}),
+  queryPerSource = sourceDim.group(),
+  pricePerQuery = queryDim.group().reduceSum(function(d) {return +d["average price"];}),
+  spendHist    = queryDim.group().reduceCount(),
+  priceDim = fdata.dimension(function(d) {return +d["average price"];}),
+  priceHist = priceDim.group().reduceSum(function(d) {return d.count;}),
+  nonEmptyHist = remove_empty_bins(pricePerQuery);
+
+
+categoryChart
+    .width(500).height(300)
+    .dimension(categoryDim)
+    .group(queryCountPerCategory)
+    .elasticX(true)
+    .ordinalColors(['#ec407a'])
+    .controlsUseVisibility(true);
+
+  //  categoryChart.xAxis().tickFormat(function(d) {return d*10}); // convert back to base unit
+  //  categoryChart.yAxis().ticks(2);
+
+ priceChart
+    .dimension(priceDim)
+    .width(500).height(300)
+    .group(priceHist)
+    .x(d3.scale.linear().domain([0,950]))
+    .elasticY(true)
+    .ordinalColors(['#7986cb'])
+    .controlsUseVisibility(true)
+    .xAxisLabel('Price in Dollars')
+    .yAxisLabel('Number of Queries');
+
+  queryChart
+    .width(750).height(4250)
+    .dimension(queryDim)
+    .fixedBarHeight(25)
+    .margins({ top: 20, left: 10, right: 10, bottom: 20 })    
+    .group(nonEmptyHist)
+    .elasticX(true)
+    .gap(1)
+    .ordinalColors(['#4a148c'])
+    .controlsUseVisibility(true);
+
+
+    dc.renderAll();
+  });
+});
+
+</script>
+<script>
+
+$(document).ready(function(){
+        $("#fix").hide();
+  
+$(window).scroll(
+     
+    function () {
+    var currentTop = $(window).scrollTop();
+    if (currentTop < 1000) {
+        $("#fix").fadeOut(300);
+    } else 
+    {
+        $("#fix").fadeIn(300);
+    }
+});
+
+  });
+
+</script>
+</body>
+</html>
